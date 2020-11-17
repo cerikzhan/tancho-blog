@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Inactive comments</h1>
+<div class="list-group">
+    {% for comment in comments %}
+    <div class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ comment.username }}</h5>
+        <small>{{ comment.email }}</small>
+        <small class="ml-2">{{ comment.created|timesince }}</small><br>
+        <p>{{ comment.post.title }}</p>
+        </div>
+        <p class="mb-1">{{ comment.content }}</p><br>
+        <div class="row">
+            <div class='col-xs-6'>
+                <form action="." method="POST">{% csrf_token %}
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    <button class="btn btn-info" type="submit">Confirm</button>
+                </form>
+            </div>
+            <div class='col-xs-6'>
+                <button class="btn btn-danger" type="button" data-commentid="{{ comment.id }}" data-toggle="modal" data-target="#deleteComment">Delete</button>
+            </div>
+        </div>
+        
+    </div>
+    {% endfor %}
+</div>
+
+
+  
+
+  <!-- Modal -->
+<div class="modal fade" id="deleteComment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Delete Comment?</h4>
+        </div>
+        <form action="{% url 'delete-comment' %}" method="POST">{% csrf_token %}
+            <div class="content">
+                <input type="hidden" name="comment_id" id="com_id" value="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock content %}

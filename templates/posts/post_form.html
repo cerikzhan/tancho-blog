@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Blog Post</legend>
+            {{ form }}
+            <label for="post_tags">Tags:</label>
+            <input type="text" name='post_tags'>
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Post</button>
+        </div>
+    </form>
+{% endblock content %}

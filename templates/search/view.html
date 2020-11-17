@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="posts-inner  list-layout">
+
+    {% if query %}
+        <div class='col-12' >
+            Results for <b>{{ query }}</b>
+            <hr/>
+        </div>
+    {% endif %}
+
+    {% for post in posts %}
+    <article class="post">
+        <div class="post-media" style="background-image: url({{ post.image.url }})">
+            <a href="{{ post.get_absolute_url }}">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}">
+            </a>
+        </div>
+        <div class="post-content">
+            <div class="post-header">
+                <h2 class="title">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </h2>
+
+                <!-- Post Details -->
+                <div class="post-details">
+                    <div class="post-cat">
+                        <a href="{% url 'category' cat_slug=post.category.slug %}">{{ post.category.title }}</a>
+                    </div>
+                    <span class="post-date"><span>{{ post.created|date:'F d, Y' }}</span></span>
+                    <div class="post-details-child">
+                        <span class="post-views">{{ post.views }}</span>
+                        <a href="{{ post.get_absolute_url }}#comments" class="post-comments">{{ post.comment_set.all.count }}</a>
+                        <div class="post-share-icon">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i><span>Facebook</span></a></li>
+                                <li><a href="#"><i class="fa fa-google"></i><span>Google Plus</span></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i><span>Twitter</span></a></li>
+                                <li><a href="#"><i class="fa fa-behance"></i><span>Behance</span></a></li>
+                                <li><a href="#"><i class="fa fa-dribbble"></i><span>Dribbble</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Post Details -->
+            </div>
+            <!-- The Content -->
+            <div class="the-excerpt">
+                <p>{{ post.content|truncatechars:200 }}</p>
+            </div>
+            <!-- End The Content -->
+            <div class="read-more">
+                <a href="{{ post.get_absolute_url }}">Continue Reading ...</a>
+            </div>
+        </div>
+
+    </article>
+    {% endfor %}
+
+</div>
+
+{% if is_paginated %}
+
+<!-- Pagination -->
+<div class="pagination-wrap">
+    {% if page_obj.has_next %}
+    <div class="older">
+        <a href="?page={{ page_obj.next_page_number }}">Older Posts <i class="fa fa-angle-double-right"></i></a>
+    </div>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+    <div class="newer">
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-double-left"></i> Newer Posts</a>
+    </div>
+    {% endif %}
+</div>
+<!-- End Pagination -->
+
+{% endif %}
+
+{% endblock content %}

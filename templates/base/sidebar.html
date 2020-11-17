@@ -1,0 +1,90 @@
+{% load static %}
+
+{% url 'home' as home_url %}
+{% url 'category' cat_slug='python' as python_url %}
+{% url 'category' cat_slug='django' as django_url %}
+{% url 'post-detail' cat_slug='django' as django_post_url %}
+
+<div class="col-md-3">
+    <div class="header affix">
+        <div class="table">
+            <div class="table-cell">
+
+                
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo-light.png' %}" alt="Logo" class="logo-light">
+                        <img src="{% static 'images/logo.png' %}" alt="Logo">
+                    </a>
+                </div>
+                <!-- End Logo -->
+
+                
+                <!-- Navigation -->
+                <div class="main-menu">
+                    <nav>
+                        <ul class="menu-list">
+                            <li class="{% if request.path == home_url %}active{% endif %}">
+                                <a href="{{ home_url }}">Home</a>
+                            </li>
+                            <li class="{% if request.path == python_url %}active{% endif %}">
+                                <a href="{{ python_url }}">Python</a>
+                            </li>
+                            <li class="{% if request.path == django_url or request.path == django_post_url %}active{% endif %}">
+                                <a href="{{ django_url }}">Django</a>
+                            </li>
+                            <li>
+                                <a href="about.html">About</a>
+                            </li>
+                            <li>
+                                <a href="contact.html">Contact</a>
+                            </li>
+                            {% if request.user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'post-create' %}">New Post</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'inactive' %}">Inactive comments</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                <!-- End Navigation -->
+
+                <!-- Socials -->
+                <div class="socials">
+                    <a href="#" title="Facebook">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a href="#" title="Google Plus">
+                        <i class="fa fa-google-plus"></i>
+                    </a>
+                    <a href="#" title="Instagram">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                    <a href="#" title="Search this site">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
+                <!-- End Socials -->
+
+                <div class="box-search">
+                    <form role="search" method="GET" action="{% url 'search' %}">
+                        <input type="text" placeholder="Search ..." name="q" value="{{ request.GET.q }}"/>
+                    </form>
+                </div>
+
+                <div class="copyright">
+                    <p>
+                        ProPython @ 2020
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

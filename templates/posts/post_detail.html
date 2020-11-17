@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="posts-inner">
+    <article class="post">
+        <div class="post-header">
+            <h2 class="title"><span>{{ object.title }}</span></h2>
+
+            <!-- Post Details -->
+            <div class="post-details">
+                <div class="post-cat">
+                    <a href="{% url 'category' cat_slug=object.category.slug %}">{{ object.category.title }}</a>
+                </div>
+                <span class="post-date"><span>{{ object.created|date:'F d, Y' }}</span></span>
+                <div class="post-details-child">
+                    <span class="post-views">{{ object.views }} views</span>
+                    <a href="#comments" class="post-comments">03 Comments</a>
+                    <div class="post-share-icon">
+                        <span>SHARE</span>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i><span>Facebook</span></a></li>
+                            <li><a href="#"><i class="fa fa-google"></i><span>Google Plus</span></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i><span>Twitter</span></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i><span>Behance</span></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i><span>Dribbble</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End Post Details -->
+        </div>
+        <div class="post-media">
+            <img src="{{ object.image.url }}" alt="{{ object.title }}">
+        </div>
+        <div class="post-content">
+
+            <!-- The Content -->
+            <div class="the-excerpt">
+
+                <p>{{ object.content }}</p>
+
+            </div>
+            <!-- End The Content -->
+            {% if object.tags %}
+            <div class="post-tags">
+                <strong>Tags: </strong>
+                <ul>
+                    {% for tag in object.tags %}
+                        <li><a href="{% url 'tag-posts' tag_slug=tag.slug %}">{{ tag.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <div class="post-author">
+                Writed by  <a href="#">{{ object.author.username }}</a>
+            </div>
+        </div>
+
+    </article>
+</div>
+
+<!-- Pagination -->
+<div class="pagination-wrap">
+
+    {% if object.previous_post  %}
+    <div class="older">
+        <a href="{{ object.previous_post.get_absolute_url }}" title="{{ object.previous_post.title }}">Prev Post <i class="fa fa-angle-double-right"></i></a>
+        <h2 class="title">
+            <a href="{{ object.previous_post.get_absolute_url }}">{{ object.previous_post.title }}</a>
+        </h2>
+    </div>
+    {% endif %}
+
+    {% if object.next_post %}
+    <div class="newer">
+        <a href="{{ object.next_post.get_absolute_url }}" title="{{ object.next_post.title }}"><i class="fa fa-angle-double-left"></i> Next Post</a>
+        <h2 class="title">
+            <a href="{{ object.next_post.get_absolute_url }}">{{ object.next_post.title }}</a>
+        </h2>
+    </div>
+    {% endif %}
+</div>
+<!-- End Pagination -->
+
+<!-- Related Posts -->
+{% if related_posts %}
+<div id="related-posts">
+    <h2 class="title"><span>Related Posts</span></h2>
+    <div class="row">
+        
+        {% for post in related_posts %}
+            <div class="col-sm-6">
+                <div class="post">
+                    <div class="post-media" style="background-image: url({{ post.image.url }})">
+                        <a href="{{ object.next_post.get_absolute_url }}">
+                            <img src="{% static 'images/posts/4.jpg' %}" alt="Image">
+                        </a>
+                    </div>
+                    <div class="post-entry">
+                        <h3 class="title">
+                            <a href="{{ object.next_post.get_absolute_url }}">Living Lagom in Sweden: An Interview With Lola Akerstrom</a>
+                        </h3>
+                        <div class="post-details">
+                            <span class="post-date"><span>{{ object.created|date:'F d, Y' }}</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}        
+
+    </div>
+</div>
+{% endif %}
+<!-- Related Posts -->
+
+<!-- Author Box -->
+<div class="author-box">
+    <div class="header-top clearfix">
+        <div class="avatar-author">
+            <img src="{% static 'images/avatar.jpg' %}" alt="Avatar">
+        </div>
+        <div class="author-name">
+            <h3 class="title">
+                <a href="#">Kendy</a>
+            </h3>
+            <div class="author-socials">
+                <a href="#" class="fa fa-behance" title="Behance"></a>
+                <a href="#" class="fa fa-dribbble" title="Dribbble"></a>
+                <a href="#" class="fa fa-facebook" title="Facebook"></a>
+                <a href="#" class="fa fa-google" title="Google Plus"></a>
+                <a href="#" class="fa fa-twitter" title="Twitter"></a>
+            </div>
+        </div>
+
+    </div>
+    <div class="author-description">
+        Kendy loves beautiful content and doesn't like to give in easily. I run responsive Web design workshops, online workshops and loves solving complex UX, front-end and performance problems in large companies.
+        <a href="#">Get in touch.</a>
+    </div>
+</div>
+<!-- End Author Box -->
+
+
+<!-- Comments -->
+<div id="comments">
+    {% if object.comment_set.all.count != 0 %}
+    <h2 class="title"><span>{{ object.comment_set.all.count }} Comments</span></h2>
+    {% endif %}
+    <div class="comments-inner">
+        <ul class="comment-list">
+            {% for comment in object.comments %}
+            <li class="comment">
+                <div class="comment-body">
+                    <div class="comment-head">
+                        <div class="comment-avatar">
+                            <img alt="avatar" src="{% static 'images/avatar-150px.jpg' %}">
+                        </div>
+                        <div class="comment-info">
+                            <h5 class="title">{{ comment.username }}</h5>
+                            <span class="comment-date">{{ comment.created|date:'F d, Y' }}</span>
+                        </div>
+                    </div>
+                    <div class="comment-context">
+                        <p>{{ comment.content }}</p>
+                        <div class="reply">
+                            <span class="comment-reply"><a class="comment-reply-link" href="#">Reply</a></span>
+                        </div>
+                        <div class="comment-reply-section" style="display: none;">
+                            <form action="." method="POST" class="contact">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                    <div class="contact-item">
+                                        <label>{{ field.label }}</label>
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                <div class="contact-item form-submit">
+                                    <input name="submit" type="submit" id="submit" class="submit" value="Reply">
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                                
+
+                    <ul class="children">
+                        {% for child_comment in comment.children %}
+                        <li class="comment">
+                            <div class="comment-body">
+                                <div class="comment-head">
+                                    <div class="comment-avatar">
+                                        <img alt="avatar" src="{% static 'images/avatar-150px.jpg' %}">
+                                    </div>
+                                    <div class="comment-info">
+                                        <h5 class="title">{{ child_comment.username }}</h5>
+                                        <span class="comment-date">{{ child_comment.created|date:'F d, Y' }}</span>
+                                    </div>
+                                </div>
+                                <div class="comment-context">
+                                    <p>{{ child_comment.content }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>   
+                
+            </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+    
+
+    <!-- Respond -->
+    <div id="respond" class="comment-respond">
+        <h2 class="title"><span>Leave a Comment</span></h2>
+        <form action="." method="POST" class="contact">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="contact-item">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+
+            <div class="contact-item form-submit">
+                <input name="submit" type="submit" id="submit" class="submit" value="Submit">
+            </div>
+        </form>
+    </div><!-- #respond -->
+    <!-- End Respond -->
+</div>
+<!-- End Comments -->
+
+{% endblock content %}

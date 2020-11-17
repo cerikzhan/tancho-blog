@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Tancho - Simple Blog HTML Template</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="icon" href="{% static 'images/favicon.png' %}" sizes="32x32" />
+
+	<link rel='stylesheet' href='//fonts.googleapis.com/css?family=Lato:400,700%7CCrete+Round' type='text/css' media='all' />
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/libs/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/libs/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+
+<body class="home">
+
+	<!-- Wrapper Site -->
+	<div id="main-content">
+
+		<!-- Preload -->
+		<div id="preload">
+			<div class="kd-bounce">
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- Preload -->
+
+		<!-- Mobile Menu -->
+		<div class="mobile">
+			<div class="container">
+				<!-- Mobile -->
+				<div class="menu-mobile">
+					<span class="item item-1"></span>
+					<span class="item item-2"></span>
+					<span class="item item-3"></span>
+				</div>
+				<!-- End Mobile -->
+
+				<!-- Logo -->
+				<div class="logo">
+					<a href="index.html">
+						<img src="{% static 'images/logo-mobile.png' %}" alt="Logo">
+					</a>
+				</div>
+				<!-- End Logo -->
+			</div>
+		</div>
+		<div class="hide-menu"></div>
+		<!-- End Mobile Menu -->
+
+		<div class="container">
+			<div class="row">
+
+				{% include 'base/sidebar.html' %}
+								
+				<div class="col-md-9 col-md-offset-3">
+					<div class="posts">
+						{% if messages %}
+							{% for message in messages %}
+							<div class="alert alert-{{ message.tags }}">
+								{{ message }}
+							</div>
+							{% endfor %}
+						{% endif %}
+						{% block content %}{% endblock content %}
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- End Wrapper Site -->
+
+	<!-- Footer -->
+	<footer id="footer" class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 col-md-offset-3">
+					<div class="footer-inner">
+						<div class="footer-widgets">
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="widget">
+										<h2 class="title"><span>About Me</span></h2>
+										<p>
+											I am tancho a Graphic Designer based in New York, specializing in User Interface Design and Development.
+										</p>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="widget">
+										<h2 class="title"><span>Contact Me</span></h2>
+										<ul>
+											<li>
+												Tel: +123 456 789
+											</li>
+											<li>
+												Email: name@domain.com
+											</li>
+											<li>
+												Address: 820 Utica Ave, Brooklyn, NY
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="widget">
+										<h2 class="title"><span>Web Links</span></h2>
+										<ul>
+
+											<li><a href="#">Tips & tricks</a></li>
+											<li><a href="#">Examples</a></li>
+											<li><a href="#">Documentation</a></li>
+											<li><a href="#">Support</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="copyright">
+										<p>ProPython @ 2020</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- End Footer -->
+
+	<!-- Scripts -->
+	<script src="{% static 'js/libs/jquery-1.12.4.min.js' %}"></script>
+	<script src="{% static 'js/libs/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/libs/masonry.pkgd.min.js' %}"></script>
+	<script src="{% static 'js/libs/imagesloaded.pkgd.min.js' %}"></script>
+	<script src="{% static 'js/scripts.js' %}"></script>
+	<!-- End Scripts -->
+
+	<script>
+		$('#deleteComment').on('show.bs.modal', function (event){
+			var btn = $(event.relatedTarget)
+			var com_id = btn.data('commentid')
+			var modal = $(this)
+
+			modal.find('.content #com_id').val(com_id)
+		})
+	</script>
+
+</body>
+</html>
